@@ -10,6 +10,7 @@
 
 ### はじめ方
 1. `cd backend`でbackendディレクトリに移動
-2. `pip install -r requirements.txt`でライブラリをインストール
-3. `uvicorn src.main:app --reload`でサーバーを起動
-4. <http://localhost:8000>をChromeで開く
+2. `sh script/env.sh`で環境変数をダウンロード
+3. `pip install -r requirements.txt`でライブラリをインストール
+4. `uvicorn src.main:app --reload`でサーバーを起動
+5. <http://localhost:8000>をChromeで開く

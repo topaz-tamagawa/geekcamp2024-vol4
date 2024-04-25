@@ -1,0 +1,1 @@
+exec gh variable list -e dev --json name,value --template '{{ range . }}{{.name}}="{{.value}}"{{"\n"}}{{ end }}' > .env
