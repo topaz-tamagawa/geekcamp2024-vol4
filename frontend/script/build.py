@@ -1,6 +1,7 @@
 import glob
 from bs4 import BeautifulSoup
 import os
+import re
 
 def resolve_html(file_path):
     """
@@ -18,12 +19,9 @@ def resolve_html(file_path):
 
 
 html_paths = glob.glob("*.html") + glob.glob("**/*.html")
-component_paths = glob.glob("component/*.html")
 
-# コンポーネントファイルは出力対象から除外
-for i, html_path in enumerate(html_paths):
-    if html_path in component_paths:
-        html_paths.pop(i)
+# 対象外のファイルをlistから削除
+html_paths = [p for p in html_paths if not re.search(r"^(component|dist)", p)]
 
 # 対象のHTMLファイルに処理を実行
 for html_path in html_paths:
