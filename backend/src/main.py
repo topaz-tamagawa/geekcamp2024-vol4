@@ -14,7 +14,7 @@ firestore = firestore_async.client()
 
 from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 @app.get("/", response_class=PlainTextResponse)
 def read_root():
