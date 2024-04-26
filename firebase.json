@@ -2,7 +2,7 @@
   "hosting": {
     "rewrites": [
       {
-        "source": "**",
+        "source": "/api{,/**}",
         "run": {
           "serviceId": "app",
           "region": "asia-northeast1",
