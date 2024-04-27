@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,6 +11,8 @@ load_dotenv(verbose=True)
 from .lib.firebase import init_firebase_app
 
 init_firebase_app()
+
+from src.lib.auth import get_user, FirebaseUser
 
 from firebase_admin import firestore_async
 
@@ -33,6 +35,11 @@ app.add_middleware(
 @app.get("/", response_class=PlainTextResponse)
 def read_root():
     return "技育CAMP2024ハッカソンVol.4 Topaz Taamagawa (Backend)"
+
+
+@app.get("/auth-ex")
+async def get_users(user: FirebaseUser = Depends(get_user)):
+    print(user)
 
 
 @app.get("/users")
