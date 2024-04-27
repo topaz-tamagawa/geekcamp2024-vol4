@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js";
 
@@ -24,3 +24,7 @@ export const firestore = getFirestore(firebase);
 export const auth = getAuth(firebase);
 /** @type {import("firebase/analytics").Analytics}  */
 export const analytics = getAnalytics(firebase);
+
+export const providers = {
+  google: new GoogleAuthProvider()
+}

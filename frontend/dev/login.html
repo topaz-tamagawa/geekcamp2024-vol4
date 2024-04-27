@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>geekcamp2024-vol4 topaz-tamagawa</title>
+</head>
+<body x-data="{ }">
+  
+  <div class="container py-4">
+    <h1 class="text-center">開発用のページです</h1>
+
+    <div class="text-center">
+      <button id="sign-with-google" class="btn btn-primary">
+        Googleでログイン
+      </button>
+    </div>
+  </div>
+  
+  <script src="https://unpkg.com/alpinejs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    Alpine.store('credential', {
+      token: "none",
+      setToken(token) {
+        this.token = token
+      },
+      getToken() {
+        return this.token || "none"
+      }
+    })
+  </script>
+
+
+  <div  class="container py-4">
+    <h4>tokne</h4>
+    <p x-text="$store.credential.token"></p>
+  </div>
+
+  <script type="module">
+    import { auth, providers } from "/js/firebase.js"
+    import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"
+
+    document.getElementById("sign-with-google").addEventListener("click", event => {
+      signInWithPopup(auth, providers.google)
+      .then((result) => {
+        Alpine.store('credential').setToken(result.user.accessToken)
+        console.log("token:", result.user.accessToken)
+      }).catch(console.error)
+    })
+  </script>
+</body>
+</html>
