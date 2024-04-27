@@ -36,6 +36,15 @@ class SampleUser(BaseModel):
 class SampleTask(BaseModel):
     name:str
 
+async def read_task(tasks_id:str):
+    task_ref=firestore.collection("sample-task").document(tasks_id)
+    task=await task_ref.get()
+    if task.exists:
+        return task.to_dict()
+    else:
+        return None
+    
+
 @app.post("/users")
 async def post_users(user: SampleUser, user_id: str):
     users_ref = firestore.collection("sample-users")
@@ -52,23 +61,23 @@ async def read_tasks():
     return tasks
 
 @app.get("/tasks/{tasks_id}")
-async def read_task(tasks_id:str):
-    task_ref=firestore.collection("sample-task").document(tasks_id)
-    task=await task_ref.get()
-    if task.exists:
-        return task.to_dict()
-    else:
-        return None
+async def read_task_endpoit(tasks_id:str):
+    return await read_task(tasks_id)
+
 @app.post("/tasks")
 async def post_task(task:SampleTask):
     while True:
         num=int((random.random()*10)**10)
         tasks_id=str(num)
-        juagetask=read_task(tasks_id)
+        juagetask=await read_task(tasks_id)
         if juagetask==None:
             task_ref=firestore.collection("sample-task")
             await task_ref.document(tasks_id).set(task.model_dump())
             return tasks_id
+        
+@app.delete("/tasks/{task_id}")
+async def delete_task(task_id:str):
+    await firestore.collection("sample-task").document(task_id).delete()
         
 
 
