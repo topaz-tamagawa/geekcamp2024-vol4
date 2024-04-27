@@ -4,7 +4,7 @@
 
 ### はじめ方
 1. VScodeを開き、右下にあるGo Liveをクリック
-2. <http://localhost:5500/frontend>をChromeで開く
+2. <http://localhost:5500>をChromeで開く
 
 ## バックエンド
 
