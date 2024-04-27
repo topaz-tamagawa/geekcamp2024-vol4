@@ -3,6 +3,8 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js";
 
+export { sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDfBvthpqiOCsJDAH08SDtUeKFwDBzOmxE",
   authDomain: "geekcamp2024-vol4-topaz.firebaseapp.com",
