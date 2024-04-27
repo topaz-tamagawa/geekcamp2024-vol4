@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 import os
 import random
@@ -18,6 +19,15 @@ firestore = firestore_async.client()
 from pydantic import BaseModel
 
 app = FastAPI(root_path="/api")
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/", response_class=PlainTextResponse)
