@@ -65,7 +65,7 @@ async def read_tasks():
     tasks_stream = firestore.collection("sample-task").stream()
     tasks = {}
     async for task_snpashot in tasks_stream:
-        tasks = task_snpashot.to_dict()
+        tasks[task_snpashot.id] = task_snpashot.to_dict()
 
     return tasks
 
