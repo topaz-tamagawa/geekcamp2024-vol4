@@ -33,9 +33,29 @@ async def get_users():
 class SampleUser(BaseModel):
     name: str
 
+class SampleTask(BaseModel):
+    name:str
+
 @app.post("/users")
 async def post_users(user: SampleUser, user_id: str):
     users_ref = firestore.collection("sample-users")
     await users_ref.document(user_id).set(user.model_dump())
     return user_id
     
+@app.get("/tasks")
+async def read_tasks():
+    tasks_stream=firestore.collection("sample-tasks").stream()
+    tasks={}
+    async for task_snpashot in tasks_stream:
+        tasks[task_snpashot]=task_snpashot.to_dict()
+
+    return tasks
+
+@app.get("/tasks/{tasks_id}")
+async def read_task(task_id:str):
+    task_ref=firestore.collection("SampleTask").document(task_id)
+    task=await task_ref.get()
+    if task.exists:
+        return task
+    
+
