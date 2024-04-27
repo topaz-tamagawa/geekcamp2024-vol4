@@ -150,7 +150,9 @@
         window.alert(email + ' に認証リンクを送信しました');
         location.reload()
       }).catch(err => {
-        console.log(err)
+        console.error(err)
+        window.alert(err.message)
+        location.reload()
       })
     })
 
