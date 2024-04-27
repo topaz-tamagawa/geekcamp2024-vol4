@@ -62,15 +62,9 @@
   <iframe src="./component/header.html"></iframe>
   <h1>技育CAMP2024ハッカソンVol.4 Topaz Taamagawa (Frontend)</h1>
 
-  <p x-text="String($store.auth.user?.accessToken)"></p>
-
   <main class="container">
     <h1 class="text-center">Hello, world!</h1>
   </main>
-
-  <form>
-    <input id="email" type="email">
-  </form>
 
   <div class="container mt-5">
     <div class="card">
@@ -128,8 +122,6 @@
       baseURL: 'https://geekcamp2024-vol4-topaz.web.app/api',
       timeout: 5000,
     })
-
-    console.log(api)
   </script>
 
   <script type="module">
