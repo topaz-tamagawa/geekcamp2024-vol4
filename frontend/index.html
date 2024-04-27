@@ -35,8 +35,16 @@
 <body x-data="{tasks:[{name:'task1'},{name:'task2'},{name:'task3'}]}">
   <script src="https://unpkg.com/alpinejs"></script>
 
+  <script>
+    Alpine.store('auth', {
+      user: undefined
+    })
+  </script>
+
   <iframe src="./component/header.html"></iframe>
   <h1>技育CAMP2024ハッカソンVol.4 Topaz Taamagawa (Frontend)</h1>
+
+  <p x-text="String($store.auth.user?.accessToken)"></p>
 
   <main class="container">
     <h1 class="text-center">Hello, world!</h1>
@@ -127,7 +135,7 @@
     })
 
     onAuthStateChanged(auth, user => {
-      console.log("token", user.accessToken)
+      Alpine.store("auth").user = user
     })
   </script>
 </body>
