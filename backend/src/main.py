@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 
 import os
-
+import random
 from dotenv import load_dotenv
 load_dotenv(verbose=True)
 
@@ -44,18 +44,39 @@ async def post_users(user: SampleUser, user_id: str):
     
 @app.get("/tasks")
 async def read_tasks():
-    tasks_stream=firestore.collection("sample-tasks").stream()
+    tasks_stream=firestore.collection("sample-task").stream()
     tasks={}
     async for task_snpashot in tasks_stream:
-        tasks[task_snpashot]=task_snpashot.to_dict()
+        tasks=task_snpashot.to_dict()
 
     return tasks
 
 @app.get("/tasks/{tasks_id}")
-async def read_task(task_id:str):
-    task_ref=firestore.collection("SampleTask").document(task_id)
+async def read_task(tasks_id:str):
+    task_ref=firestore.collection("sample-task").document(tasks_id)
     task=await task_ref.get()
     if task.exists:
-        return task
+        return task.to_dict()
+    else:
+        return None
+@app.post("/tasks")
+async def post_task(task:SampleTask):
+    while True:
+        num=int((random.random()*10)**10)
+        tasks_id=str(num)
+        juagetask=read_task(tasks_id)
+        if juagetask==None:
+            task_ref=firestore.collection("sample-task")
+            await task_ref.document(tasks_id).set(task.model_dump())
+            return tasks_id
+        
+
+
+
+
+            
     
 
+
+    
+    
