@@ -32,7 +32,11 @@
           window.localStorage.removeItem('emailForSignIn')
           location.href = "/"
         })
-        .catch(console.error)
+        .catch(err => {
+          console.error(err)
+          window.alert(err.message)
+          location.href = "/"
+        })
     }
   </script>
 </body>
