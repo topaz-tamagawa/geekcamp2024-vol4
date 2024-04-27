@@ -28,6 +28,10 @@
     }
 
   </style>
+  <script type="module">
+    import { firebase, firestore, auth, analytics } from "./js/firebase.js"
+    console.log(firebase, firestore, auth, analytics)
+  </script>
 </head>
 <body x-data="{tasks:[{name:'task1'},{name:'task2'},{name:'task3'}]}">
   <iframe src="./component/header.html"></iframe>
@@ -36,6 +40,11 @@
   <main class="container">
     <h1 class="text-center">Hello, world!</h1>
   </main>
+
+  
+<form>
+  <input id="email" type="email">
+</form>
 
   <div class="container mt-5">
     <div class="card">
@@ -98,6 +107,43 @@
     })
 
     console.log(api)
+  </script>
+
+  <script type="module">
+    import { firebase, firestore, auth, analytics, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged } from "./js/firebase.js"
+
+    const form =  document.querySelector("form")
+    form.addEventListener('submit', event => {
+      event.preventDefault()
+
+      const email = document.getElementById("email").value
+      sendSignInLinkToEmail(auth, email, {
+        url: location.href,
+        handleCodeInApp: true,
+      }).then(() => {
+        window.localStorage.setItem('emailForSignIn', email)
+        window.alert('send url for email adress');
+      }).catch(err => {
+        console.log(err)
+      })
+    })
+
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      let email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        email = window.prompt('Please provide your email for confirmation');
+      }
+      signInWithEmailLink(auth, email, window.location.href)
+        .then((result) => {
+          window.localStorage.removeItem('emailForSignIn')
+          console.log(result.user)
+        })
+        .catch(console.error)
+    }
+
+    onAuthStateChanged(auth, user => {
+      console.log("token", user.accessToken)
+    })
   </script>
 </body>
 </html>
