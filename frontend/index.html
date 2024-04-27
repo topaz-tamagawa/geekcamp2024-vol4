@@ -28,6 +28,10 @@
     }
 
   </style>
+  <script type="module">
+    import { firebase, firestore, auth, analytics } from "./js/firebase.js"
+    console.log(firebase, firestore, auth, analytics)
+  </script>
 </head>
 <body x-data="{tasks:[{name:'task1'},{name:'task2'},{name:'task3'}]}">
   <iframe src="./component/header.html"></iframe>
