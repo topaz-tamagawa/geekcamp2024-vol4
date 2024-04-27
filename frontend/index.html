@@ -122,7 +122,8 @@
         handleCodeInApp: true,
       }).then(() => {
         window.localStorage.setItem('emailForSignIn', email)
-        window.alert('send url for email adress');
+        window.alert(email + ' に登録リンクを送信しました');
+        location.reload()
       }).catch(err => {
         console.log(err)
       })
