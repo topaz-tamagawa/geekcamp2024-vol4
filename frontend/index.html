@@ -8,6 +8,24 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <title>geekcamp2024-vol4 topaz-tamagawa</title>
+  <style>
+    .custom-button {
+      background-color: #66CC99; /* ボタンの背景色 */
+      color: #000000; /*ボタンのテキスト色 */
+      border-color: #66CC99; /* ボタンのボーダー色 */
+
+      border-radius: 40px; /* 任意の値を設定して楕円形の形状を調整します */
+      width: 200px;
+      height: 80px;
+      font-size: 20px;
+    }
+    .custom-button:hover {
+      background-color: #e54729; /* ホバー時の背景色 */
+      border-color: #e54729; /* ホバー時のボーダー色 */
+      color: #000000;
+    }
+
+  </style>
 </head>
 <body>
   <iframe src="./component/header.html"></iframe>
@@ -27,6 +45,26 @@
       </div>
     </a>
   </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <a href = "./task/sample-task">
+      <button type="button" class="btn btn-primary custom-button">課題</button>
+      </a>
+    </div>
+    <div class="col">
+      <a href = "./task/sample-task">
+      <button type="button" class="btn btn-primary custom-button">Button 2</button>
+      </a>
+    </div>
+    <div class="col">
+      <a href = "./task/sample-task">
+      <button type="button" class="btn btn-primary custom-button">Button 3</button>
+      </a>
+    </div>
+  </div>
+</div>
 
   <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
