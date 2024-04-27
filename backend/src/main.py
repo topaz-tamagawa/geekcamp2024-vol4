@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 from datetime import datetime, time, timedelta
 from typing import List, Optional
 
@@ -13,6 +15,8 @@ from .lib.firebase import init_firebase_app
 
 init_firebase_app()
 
+from src.lib.auth import get_user, FirebaseUser
+
 from firebase_admin import firestore_async
 
 firestore = firestore_async.client()
@@ -22,9 +26,23 @@ from pydantic import BaseModel
 app = FastAPI(root_path="/api")
 
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/", response_class=PlainTextResponse)
 def read_root():
     return "技育CAMP2024ハッカソンVol.4 Topaz Taamagawa (Backend)"
+
+
+@app.get("/auth-ex")
+async def get_users(user: FirebaseUser = Depends(get_user)):
+    print(user)
 
 
 @app.get("/users")
@@ -103,7 +121,7 @@ async def read_tasks():
     tasks_stream = firestore.collection("sample-task").stream()
     tasks = {}
     async for task_snpashot in tasks_stream:
-        tasks = task_snpashot.to_dict()
+        tasks[task_snpashot.id] = task_snpashot.to_dict()
 
     return tasks
 
