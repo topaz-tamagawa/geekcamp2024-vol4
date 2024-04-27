@@ -2,6 +2,7 @@ import glob
 from bs4 import BeautifulSoup
 import os
 import re
+import shutil
 
 def resolve_html(file_path):
     """
@@ -30,3 +31,7 @@ for html_path in html_paths:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as output_file:
         output_file.write(soup.prettify())
+
+# 静的なファイルをコピー
+shutil.copytree("js", "dist/js")
+shutil.copytree("css", "dist/css")
