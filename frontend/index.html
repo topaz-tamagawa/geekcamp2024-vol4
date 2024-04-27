@@ -118,28 +118,16 @@
 
       const email = document.getElementById("email").value
       sendSignInLinkToEmail(auth, email, {
-        url: location.href,
+        url: location.origin + "/callback.html?type=email",
         handleCodeInApp: true,
       }).then(() => {
         window.localStorage.setItem('emailForSignIn', email)
-        window.alert('send url for email adress');
+        window.alert(email + ' に登録リンクを送信しました');
+        location.reload()
       }).catch(err => {
         console.log(err)
       })
     })
-
-    if (isSignInWithEmailLink(auth, window.location.href)) {
-      let email = window.localStorage.getItem('emailForSignIn');
-      if (!email) {
-        email = window.prompt('Please provide your email for confirmation');
-      }
-      signInWithEmailLink(auth, email, window.location.href)
-        .then((result) => {
-          window.localStorage.removeItem('emailForSignIn')
-          console.log(result.user)
-        })
-        .catch(console.error)
-    }
 
     onAuthStateChanged(auth, user => {
       console.log("token", user.accessToken)
