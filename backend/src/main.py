@@ -58,22 +58,21 @@ async def get_users():
 
 class SampleUser(BaseModel):
     name: str
-    age:int
-    birth:str
-    college:str
-    Department:str
-
+    age: int
+    birth: str
+    college: str
+    Department: str
 
 
 class InputTask(BaseModel):
-    creat_at:datetime
+    creat_at: datetime
 
 
 class SampleTask(BaseModel):
-    name    : str    
-    user_id :str
-    lesson_id:str
-    By_date:Optional[datetime]
+    name: str
+    user_id: str
+    lesson_id: str
+    By_date: Optional[datetime]
 
 
 async def read_task(tasks_id: str):
@@ -91,33 +90,35 @@ async def post_users(user: SampleUser, user_id: str):
     await users_ref.document(user_id).set(user.model_dump())
     return user_id
 
-    
-    
+
 @app.get("/users")
 async def read_users():
-    user_stream=firestore.collection("sample-users").stream()
-    user={}
+    user_stream = firestore.collection("sample-users").stream()
+    user = {}
     async for user_snpashot in user_stream:
-        user[user_snpashot.id]=user_snpashot.to_dict()
+        user[user_snpashot.id] = user_snpashot.to_dict()
     return user
 
+
 @app.get("/user/{user_id}")
-async def read_user(user_id:str):
-    user_ref=firestore.collection("sample-users").document(user_id)
-    user=await user_ref.get()
+async def read_user(user_id: str):
+    user_ref = firestore.collection("sample-users").document(user_id)
+    user = await user_ref.get()
     if user.exists:
         return user.to_dict()
     else:
         return None
+
+
 @app.post("/user/register")
-async def register_post_user(user_id:str,age:int,colleg:str,depertment:str):
-    user=await read_user(user_id)
-    
+async def register_post_user(user_id: str, age: int, colleg: str, depertment: str):
+    user = await read_user(user_id)
+
 
 @app.get("/profile")
 async def read_user(id: str):
-    user_ref=firestore.collection("sample-users").document(id)
-    user=await user_ref.get()
+    user_ref = firestore.collection("sample-users").document(id)
+    user = await user_ref.get()
     if user.exists:
         user_dict = user.to_dict()
         return {
@@ -127,7 +128,7 @@ async def read_user(id: str):
         return None
 
 
-#すべてのタスクを取得
+# すべてのタスクを取得
 @app.get("/tasks")
 async def read_tasks():
     tasks_stream = firestore.collection("sample-task").stream()
@@ -137,14 +138,16 @@ async def read_tasks():
 
     return tasks
 
-#特定のタスクを取得
+
+# 特定のタスクを取得
 @app.get("/tasks/{tasks_id}")
 async def read_task_endpoit(tasks_id: str):
     return await read_task(tasks_id)
 
-#user登録情報を基にタスクを生成
+
+# user登録情報を基にタスクを生成
 @app.post("/tasks")
-async def post_task(task: SampleTask,user_id:str,lesson_id:str,date:datetime):
+async def post_task(task: SampleTask, user_id: str, lesson_id: str, date: datetime):
     while True:
         num = int((random.random() * 10) ** 10)
         tasks_id = str(num)
@@ -153,26 +156,25 @@ async def post_task(task: SampleTask,user_id:str,lesson_id:str,date:datetime):
             task_ref = firestore.collection("sample-task")
             task_dict = task.model_dump()
             task_dict["create_at"] = firestore_async.SERVER_TIMESTAMP
-            task_dict["user_id"]=user_id
-            task_dict["lesson_id"]=lesson_id
-            task_dict["By_date"]=date
+            task_dict["user_id"] = user_id
+            task_dict["lesson_id"] = lesson_id
+            task_dict["By_date"] = date
 
             await task_ref.document(tasks_id).set(task_dict)
-            
+
             return tasks_id
 
-#タスクidを基にタスクを削除
+
+# タスクidを基にタスクを削除
 @app.delete("/tasks/{task_id}")
 async def delete_task(task_id: str):
     await firestore.collection("sample-task").document(task_id).delete()
 
 
-
 @app.get("/users/{user_id}/share")
 async def share(user_id: str):
-    lesson_list=firestore.collection("lessons").where('user_id','==', user_id)
+    lesson_list = firestore.collection("lessons").where("user_id", "==", user_id)
     lessons = {}
     async for lessons_snpashot in lesson_list.stream():
-        lessons[lessons_snpashot.id]=lessons_snpashot.to_dict()
+        lessons[lessons_snpashot.id] = lessons_snpashot.to_dict()
     return lessons
-    
