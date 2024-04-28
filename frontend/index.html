@@ -71,20 +71,16 @@
 
   <div class="container">
     <div class="row">
-      <div class="col">
-        <a href="./task/sample-task">
-          <button type="button" class="btn btn-primary custom-button">課題</button>
+      <div class="col text-center p-2">
+        <a :href="'/share?uid='+$store.auth.user?.uid">
+          <button type="button" class="btn btn-primary custom-button">授業のシェア</button>
         </a>
       </div>
-      <div class="col">
-        <a href="./task/sample-task">
-          <button type="button" class="btn btn-primary custom-button">Button 2</button>
-        </a>
+      <div class="col text-center disabled p-2">
+        <button type="button" class="btn btn-primary custom-button">課題の追加</button>
       </div>
-      <div class="col">
-        <a href="./task/sample-task">
-          <button type="button" class="btn btn-primary custom-button">Button 3</button>
-        </a>
+      <div class="col text-center disabled  p-2">
+        <button type="button" class="btn btn-primary custom-button ">友達の表示</button>
       </div>
     </div>
   </div>
