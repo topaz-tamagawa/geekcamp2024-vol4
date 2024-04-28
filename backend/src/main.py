@@ -165,3 +165,14 @@ async def post_task(task: SampleTask,user_id:str,lesson_id:str,date:datetime):
 @app.delete("/tasks/{task_id}")
 async def delete_task(task_id: str):
     await firestore.collection("sample-task").document(task_id).delete()
+
+
+
+@app.get("/users/{user_id}/share")
+async def share(user_id: str):
+    lesson_list=firestore.collection("lessons").where('user_id','==', user_id)
+    lessons = {}
+    async for lessons_snpashot in lesson_list.stream():
+        lessons[lessons_snpashot.id]=lessons_snpashot.to_dict()
+    return lessons
+    
