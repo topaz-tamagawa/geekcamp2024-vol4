@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>geekcamp2024-vol4 topaz-tamagawa</title>
+</head>
+<body x-data="{ }">
+  <script src="https://unpkg.com/alpinejs"></script>
+
+  <script>
+    Alpine.store('auth', {
+      user: undefined,
+      logout(){
+        if (this.user) {
+          logout()
+        }
+      },
+    })
+  </script>
+  
+  <div class="container py-4">
+    <h1 class="text-center">ユーザーページ</h1>
+  </div>
+
+  <div class="container py-4">
+    <h4>User: </h4>
+    <p x-text="$store.auth?.user?.email"></p>
+    <button @click="$store.auth?.logout?.()" class="btn btn-primary">Logout</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script type="module">
+    import { auth  } from "./js/firebase.js"
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"
+
+    onAuthStateChanged(auth, user => {
+      Alpine.store("auth").user = user
+      console.log(user)
+    })
+
+    setTimeout(() => {
+      if (!Alpine.store("auth").user) {
+        window.alert("ログインされていないため、トップページに移動します")
+        location.href = "/"
+      }
+    }, 3000)
+    
+    window.logout = () => {
+      return signOut(auth)
+        .then(() => {
+          location.href = "/"
+        }).catch(err => {
+          console.error(err)
+          location.href = "/"
+        })
+    }
+  </script>
+</body>
+</html>
