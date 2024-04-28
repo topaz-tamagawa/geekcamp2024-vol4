@@ -63,7 +63,7 @@
     })
 
     if (uid) {
-      api.get("/users/"+uid+"/share").then(res => {
+      api.get("/users/"+uid+"/share.html").then(res => {
         if (res.data) {
           Alpine.store('api').lessons = [
             {
