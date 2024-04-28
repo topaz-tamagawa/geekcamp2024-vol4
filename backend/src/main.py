@@ -75,6 +75,13 @@ class SampleTask(BaseModel):
     By_date: Optional[datetime]
 
 
+class SampleLesson(BaseModel):
+    name: str
+    place: str
+    date: str
+    date_index: int
+
+
 async def read_task(tasks_id: str):
     task_ref = firestore.collection("sample-task").document(tasks_id)
     task = await task_ref.get()
@@ -177,3 +184,20 @@ async def share(user_id: str):
         lessons.append(lessons_snpashot.to_dict())
     lessons.sort(key=lambda l: l["date_index"])
     return lessons
+
+@app.post("/lessons")
+async def creat_lesson(
+    lesson: SampleLesson,
+    user: FirebaseUser = Depends(get_user),
+):
+    while True:
+        num = int((random.random() * 10) ** 10)
+        lesson_id = str(num)
+        lesson_ref = firestore.collection("lessons").document(lesson_id)
+        get_lesson = await lesson_ref.get()
+
+        if get_lesson.exists:
+            lesson_dict = lesson.model_dump()
+            lesson_dict["user_id"] = user.uid
+            await lesson_ref.set(lesson_dict)
+            return lesson_id
