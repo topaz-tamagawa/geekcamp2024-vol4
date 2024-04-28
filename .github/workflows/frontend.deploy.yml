@@ -50,6 +50,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT_KEY }}'
+          firebaseServiceAccount: '${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT_KEY_JSON }}'
           projectId: geekcamp2024-vol4-topaz
           channelId: live
