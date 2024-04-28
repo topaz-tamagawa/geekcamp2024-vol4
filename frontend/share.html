@@ -52,7 +52,7 @@
     onAuthStateChanged(auth, user => {
       Alpine.store("auth").user = user
       if (user) {
-        const url = location.origin + "/share?user=" + user.uid
+        const url = location.origin + "/share.html?user=" + user.uid
         new QRCode(document.getElementById("qrcode"), url)
       }
     })
@@ -63,7 +63,7 @@
     })
 
     if (uid) {
-      api.get("/users/"+uid+"/share.html").then(res => {
+      api.get("/users/"+uid+"/share").then(res => {
         if (res.data) {
           Alpine.store('api').lessons = [
             {
