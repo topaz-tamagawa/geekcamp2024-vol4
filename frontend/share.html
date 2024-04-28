@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>geekcamp2024-vol4 topaz-tamagawa</title>
+</head>
+<body x-data="{ }">
+  <script src="https://unpkg.com/alpinejs"></script>
+  <script src="/js/qrcode.min.js"></script>
+
+  <script>
+    const url = new URL(location.href)
+    const uid = url.searchParams.get("user")
+
+    Alpine.store('auth', {
+      user: undefined,
+    })
+
+    Alpine.store('api', {
+      uid: uid,
+      lessons: []
+    })
+  </script>
+  
+  <div x-show="!$store.api.uid" class="container py-4">
+    <h1 class="text-center">共有QRコード</h1>
+    <div x-show="$store.auth.user" id="qrcode" class="d-flex justify-content-center"></div>
+  </div>
+
+  <div x-show="$store.api.uid" class="container py-4">
+    <template x-for="lesson in $store.api.lessons">
+      <div class="card my-3 mx-3 text-center" style="max-width: 600px">
+        <h5 class="card-header" x-text="lesson.date"></h5>
+        <h5 class="card-title h2 my-2" x-text="lesson.name"></h5>
+        <p class="card-text" x-text="lesson.place"></p>
+      </div>
+    </template>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+     </script>
+
+  <script type="module">
+    import axios from 'https://cdn.jsdelivr.net/npm/axios@1.4.0/+esm'
+    import { auth  } from "./js/firebase.js"
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"
+
+    onAuthStateChanged(auth, user => {
+      Alpine.store("auth").user = user
+      if (user) {
+        const url = location.origin + "/share?user=" + user.uid
+        new QRCode(document.getElementById("qrcode"), url)
+      }
+    })
+
+    const api = axios.create({
+      baseURL: 'https://geekcamp2024-vol4-topaz.web.app/api',
+      timeout: 5000,
+    })
+
+    if (uid) {
+      api.get("/users/"+uid+"/share").then(res => {
+        if (res.data) {
+          Alpine.store('api').lessons = [
+            {
+              name: "情報処理技術",
+              date: "月(9, 10限)",
+              place: "場所"
+            }
+          ]
+        } else {
+          window.alert("ユーザーが見つかりませんでした。トップページに移動します")
+          location.href = "/"
+        }
+      }).catch(console.error)
+    } else {
+      setTimeout(() => {
+        if (!Alpine.store("auth").user) {
+          // window.alert("ログインされていないため、トップページに移動します")
+          // location.href = "/"
+        }
+      }, 3000)
+    }
+  </script>
+</body>
+</html>
