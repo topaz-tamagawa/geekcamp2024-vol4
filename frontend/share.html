@@ -65,13 +65,7 @@
     if (uid) {
       api.get("/users/"+uid+"/share").then(res => {
         if (res.data) {
-          Alpine.store('api').lessons = [
-            {
-              name: "情報処理技術",
-              date: "月(9, 10限)",
-              place: "場所"
-            }
-          ]
+          Alpine.store('api').lessons = res.data
         } else {
           window.alert("ユーザーが見つかりませんでした。トップページに移動します")
           location.href = "/"
