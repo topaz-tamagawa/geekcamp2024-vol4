@@ -59,40 +59,28 @@
     </div>
   </header>
 
-  <iframe src="./component/header.html"></iframe>
-  <h1>技育CAMP2024ハッカソンVol.4 Topaz Taamagawa (Frontend)</h1>
-
-  <main class="container">
-    <h1 class="text-center">Hello, world!</h1>
-  </main>
-
-  <div class="container mt-5">
-    <div class="card">
-      <a href="./lessons/sample-lesson">
-        <div class="card-body text-center">
-          <h5 class="card-title">授業</h5>
-          <p class="card-text">田中先生</p>
-          <p class="card-text">教室</p>
-        </div>
-      </a>
-    </div>
+  <div class="container my-5" style="max-width: 600px">
+    <a href="./lesson?id=1" class="card text-decoration-none link-dark">
+      <h5 class="card-header">次の授業</h5>
+      <div class="card-body text-center">
+        <h5 class="card-title">情報処理技術</h5>
+        <p class="card-text">13:00 StreamHall 301AB</p>
+      </div>
+    </a>
   </div>
+
   <div class="container">
     <div class="row">
-      <div class="col">
-        <a href="./task/sample-task">
-          <button type="button" class="btn btn-primary custom-button">課題</button>
+      <div class="col text-center p-2">
+        <a :href="'/share?uid='+$store.auth.user?.uid">
+          <button type="button" class="btn btn-primary custom-button">授業の共有</button>
         </a>
       </div>
-      <div class="col">
-        <a href="./task/sample-task">
-          <button type="button" class="btn btn-primary custom-button">Button 2</button>
-        </a>
+      <div class="col text-center disabled p-2">
+        <button type="button" class="btn btn-primary custom-button">課題の追加</button>
       </div>
-      <div class="col">
-        <a href="./task/sample-task">
-          <button type="button" class="btn btn-primary custom-button">Button 3</button>
-        </a>
+      <div class="col text-center disabled  p-2">
+        <button type="button" class="btn btn-primary custom-button ">友達の表示</button>
       </div>
     </div>
   </div>
