@@ -44,7 +44,7 @@
     const uid = url.searchParams.get("id")
 
     if (uid) {
-      api.get("/profile?"+uid).then(res => {
+      api.get("/profile?id="+uid).then(res => {
         if (res.data) {
           Alpine.store('api').profil = res.data
         } else {
