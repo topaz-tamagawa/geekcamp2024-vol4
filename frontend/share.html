@@ -14,6 +14,11 @@
     Alpine.store('auth', {
       user: undefined,
     })
+
+    Alpine.store('api', {
+      uid: url.searchParams.get("user"),
+      lessons: []
+    })
   </script>
   
   <div class="container py-4">
@@ -27,6 +32,7 @@
      </script>
 
   <script type="module">
+    import axios from 'https://cdn.jsdelivr.net/npm/axios@1.4.0/+esm'
     import { auth  } from "./js/firebase.js"
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"
 
@@ -38,12 +44,28 @@
       }
     })
 
-    setTimeout(() => {
-      if (!Alpine.store("auth").user) {
-        window.alert("ログインされていないため、トップページに移動します")
-        location.href = "/"
-      }
-    }, 3000)
+    const api = axios.create({
+      baseURL: 'https://geekcamp2024-vol4-topaz.web.app/api',
+      timeout: 5000,
+    })
+
+    if (Alpine.store("api").uid) {
+      api.get("/users/"+uid+"/share").then(res => {
+        if (res.data) {
+          Alpine.store('api').lessons = res.data
+        } else {
+          window.alert("ユーザーが見つかりませんでした。トップページに移動します")
+          location.href = "/"
+        }
+      }).catch(console.error)
+    } else {
+      setTimeout(() => {
+        if (!Alpine.store("auth").user) {
+          window.alert("ログインされていないため、トップページに移動します")
+          location.href = "/"
+        }
+      }, 3000)
+    }
   </script>
 </body>
 </html>
