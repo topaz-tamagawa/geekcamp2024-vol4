@@ -11,12 +11,15 @@
   <script src="/js/qrcode.min.js"></script>
 
   <script>
+    const url = new URL(location.href)
+    const uid = url.searchParams.get("user")
+
     Alpine.store('auth', {
       user: undefined,
     })
 
     Alpine.store('api', {
-      uid: url.searchParams.get("user"),
+      uid: uid,
       lessons: []
     })
   </script>
@@ -49,7 +52,7 @@
       timeout: 5000,
     })
 
-    if (Alpine.store("api").uid) {
+    if (uid) {
       api.get("/users/"+uid+"/share").then(res => {
         if (res.data) {
           Alpine.store('api').lessons = res.data
