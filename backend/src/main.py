@@ -121,9 +121,7 @@ async def read_user(id: str):
     user = await user_ref.get()
     if user.exists:
         user_dict = user.to_dict()
-        return {
-            "name": user_dict["name"],
-        }
+        return user_dict
     else:
         return None
 
@@ -174,7 +172,8 @@ async def delete_task(task_id: str):
 @app.get("/users/{user_id}/share")
 async def share(user_id: str):
     lesson_list = firestore.collection("lessons").where("user_id", "==", user_id)
-    lessons = {}
+    lessons = []
     async for lessons_snpashot in lesson_list.stream():
-        lessons[lessons_snpashot.id] = lessons_snpashot.to_dict()
+        lessons.append(lessons_snpashot.to_dict())
+    lessons.sort(key=lambda l: l["date_index"])
     return lessons
