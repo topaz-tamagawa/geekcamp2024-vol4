@@ -114,6 +114,18 @@ async def register_post_user(user_id:str,age:int,colleg:str,depertment:str):
     user=await read_user(user_id)
     
 
+@app.get("/profile")
+async def read_user(id: str):
+    user_ref=firestore.collection("sample-users").document(id)
+    user=await user_ref.get()
+    if user.exists:
+        user_dict = user.to_dict()
+        return {
+            "name": user_dict["name"],
+        }
+    else:
+        return None
+
 
 #すべてのタスクを取得
 @app.get("/tasks")
